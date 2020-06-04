@@ -1,0 +1,8 @@
+---
+
+- name: "Setup web application."
+  hosts: tag_Role_iis_webapp
+  gather_facts: no
+
+  roles:
+  - iis_webapp

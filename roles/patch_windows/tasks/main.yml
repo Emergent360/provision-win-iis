@@ -1,0 +1,14 @@
+---
+
+- block:
+
+  - name: Install Windows Updates
+    win_updates:
+      category_names: "{{ categories | default(omit) }}"
+      state: installed
+      log_path: c:\ansible_win_updates.txt
+    register: update_result
+
+  - name: reboot if required
+    win_reboot:
+    when: update_result.reboot_required
