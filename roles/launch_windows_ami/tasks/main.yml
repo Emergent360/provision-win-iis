@@ -57,6 +57,7 @@
     instance_tags:
       Name: empire_iis_webapp
       Role: empire_iis_webapp
+      inventory: empire
     user_data: "{{ lookup('template', '{{ role_path }}/templates/userdata.txt.j2') }}"
   register: ec2_result
 
