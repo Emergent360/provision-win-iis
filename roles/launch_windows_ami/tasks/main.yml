@@ -53,10 +53,10 @@
     wait_timeout: 500
     exact_count: 1
     count_tag:
-      Name: ansible-managed
+      count_tag: Name
     instance_tags:
-      Name: ansible-managed
-      Role: iis_webapp
+      Name: empire_iis_webapp
+      Role: empire_iis_webapp
     user_data: "{{ lookup('template', '{{ role_path }}/templates/userdata.txt.j2') }}"
   register: ec2_result
 
