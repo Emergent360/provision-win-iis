@@ -66,6 +66,7 @@
     region: "{{ ec2_region }}"
     vpc_id: "{{ create_vpc.vpc.id }}"
     tags:
+      Name: "{{ ec2_name_prefix }}-igw"
       Demonstration: "{{ demo_name }}"
   register: igw
   until: igw is not failed
@@ -82,6 +83,7 @@
       - dest: 0.0.0.0/0
         gateway_id: "{{ igw.gateway_id }}"
     tags:
+      Name: "{{ ec2_name_prefix }}-rtb"
       Demonstration: "{{ demo_name }}"
   register: routetable
   until: routetable is not failed
