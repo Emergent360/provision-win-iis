@@ -1,0 +1,117 @@
+---
+- name: Create AWS VPC {{ ec2_name_prefix }}-vpc
+  ec2_vpc_net:
+    name: "{{ ec2_name_prefix }}-vpc"
+    cidr_block: "{{ ec2_subnet }}"
+    region: "{{ ec2_region }}"
+    tags:
+      Demonstration: "{{ demo_name }}"
+  register: create_vpc
+  until: create_vpc is not failed
+  retries: 5
+
+- name: Create security group {{ ec2_name_prefix }}-sg
+  ec2_group:
+    name: "{{ ec2_name_prefix }}-sg"
+    description: "Windows Workshop SG"
+    vpc_id: "{{ create_vpc.vpc.id }}"
+    region: "{{ ec2_region }}"
+    tags:
+      Demonstration: "{{ demo_name }}"
+    rules:
+      - proto: tcp
+        from_port: 22
+        to_port: 22
+        cidr_ip: 0.0.0.0/0
+      - proto: tcp
+        from_port: 80
+        to_port: 80
+        cidr_ip: 0.0.0.0/0
+      - proto: tcp
+        from_port: 443
+        to_port: 443
+        cidr_ip: 0.0.0.0/0
+      - proto: tcp
+        from_port: 5986
+        to_port: 5986
+        cidr_ip: "0.0.0.0/0"
+      - proto: tcp
+        from_port: 3389
+        to_port: 3389
+        cidr_ip: "0.0.0.0/0"
+      - proto: tcp
+        from_port: 8080
+        to_port: 8081
+        cidr_ip: "0.0.0.0/0"
+      - proto: all
+        cidr_ip: "{{ ec2_subnet }}"
+
+- name: Create subnet {{ ec2_name_prefix }}-subnet
+  ec2_vpc_subnet:
+    region: "{{ ec2_region }}"
+    az: "{{ ec2_az }}"
+    vpc_id: "{{ create_vpc.vpc.id }}"
+    cidr: "{{ ec2_subnet }}"
+    wait_timeout: 600
+    resource_tags:
+      Name: "{{ ec2_name_prefix }}-subnet"
+      Demonstration: "{{ demo_name }}"
+  register: create_subnet
+  when: ec2_vpc_id is undefined
+  until: create_subnet is not failed
+  retries: 15
+
+- name: vpc internet gateway is present for {{ create_vpc.vpc.id }}
+  ec2_vpc_igw:
+    region: "{{ ec2_region }}"
+    vpc_id: "{{ create_vpc.vpc.id }}"
+    tags:
+      Demonstration: "{{ demo_name }}"
+  register: igw
+  until: igw is not failed
+  retries: 15
+  when: ec2_vpc_id is undefined
+
+- name: vpc public subnet route table is present for {{ create_vpc.vpc.id }}
+  ec2_vpc_route_table:
+    region: "{{ ec2_region }}"
+    vpc_id: "{{ create_vpc.vpc.id }}"
+    subnets:
+      - "{{ create_subnet.subnet.id }}"
+    routes:
+      - dest: 0.0.0.0/0
+        gateway_id: "{{ igw.gateway_id }}"
+    tags:
+      Demonstration: "{{ demo_name }}"
+  register: routetable
+  until: routetable is not failed
+  retries: 5
+  when: ec2_vpc_id is undefined
+
+- name: set variables for instance creation dynamically since VPC was not supplied by user
+  set_fact:
+    ec2_vpc_id: "{{ create_vpc.vpc.id }}"
+    ec2_security_group: "{{ ec2_name_prefix }}-insecure_all"
+    ec2_vpc_subnet_id: "{{ create_subnet.subnet.id }}"
+
+- name: Create ssh key pair for workshop {{ ec2_name_prefix }}
+  ec2_key:
+    name: "{{ ec2_name_prefix }}-key"
+    region: "{{ ec2_region }}"
+  register: create_key
+
+- name: save private key
+  copy:
+    content: "{{ create_key.key.private_key }}"
+    dest: "/var/lib/awx/.ssh/{{ ec2_name_prefix }}-private.pem"
+    mode: '0400'
+  when: create_key.changed
+
+- name: debugging all variables for ec2 instance creation VPC-1
+  debug:
+    msg:
+      - "ec2_name_prefix: {{ ec2_name_prefix }}"
+      - "ec2_vpc_id: {{ ec2_vpc_id }}"
+      - "{{ ec2_name_prefix }}-key: {{ ec2_name_prefix }}-key"
+      - "ec2_security_group: {{ ec2_security_group }}"
+      - "ec2_vpc_subnet_id: {{ ec2_vpc_subnet_id }}"

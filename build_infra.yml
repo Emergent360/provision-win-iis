@@ -1,0 +1,8 @@
+---
+
+- name: "Create AWS Infra for demo."
+  hosts: localhost
+  gather_facts: no
+
+  roles:
+  - build_infra
