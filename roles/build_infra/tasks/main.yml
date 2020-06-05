@@ -61,7 +61,7 @@
   until: create_subnet is not failed
   retries: 15
 
-- name: vpc internet gateway is present for {{ create_vpc.vpc.id }}
+- name: Create igw {{ ec2_name_prefix }}-igw
   ec2_vpc_igw:
     region: "{{ ec2_region }}"
     vpc_id: "{{ create_vpc.vpc.id }}"
@@ -73,7 +73,7 @@
   retries: 15
   when: ec2_vpc_id is undefined
 
-- name: vpc public subnet route table is present for {{ create_vpc.vpc.id }}
+- name: Create rtb {{ ec2_name_prefix }}-rtb
   ec2_vpc_route_table:
     region: "{{ ec2_region }}"
     vpc_id: "{{ create_vpc.vpc.id }}"
