@@ -22,9 +22,13 @@
   debug:
     var: sg_net_facts
 
-- name: set ec_sg_id
+- name: set ec2_sg_id
   set_fact:
     ec2_sg_id: "{{ sg_net_facts.security_groups[0].group_id }}"
+
+- name: debug ec2_sg_id
+  debug:
+    var: ec2_sg_id
 
 - name: "Find current, region-specific Windows AMI."
   ec2_ami_info:
