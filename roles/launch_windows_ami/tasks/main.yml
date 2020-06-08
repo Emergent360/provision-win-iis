@@ -8,7 +8,7 @@
 
 - name: set ec2_vpc_id
   set_fact:
-    ec2_vpc_id: "{{ vpc_net_facts.vpcs[0].id|default('WORKSHOP_UNDEF') }}"
+    ec2_vpc_id: "{{ vpc_net_facts.vpcs[0].id }}"
 
 - name: Get the SG ID for {{ ec2_name_prefix }}-sg
   ec2_group_info:
@@ -24,7 +24,7 @@
 
 - name: set ec_sg_id
   set_fact:
-    ec2_sg_id: "{{ sg_net_facts }}"
+    ec2_sg_id: "{{ sg_net_facts.security_groups[0].group_id }}"
 
 - name: "Find current, region-specific Windows AMI."
   ec2_ami_info:
