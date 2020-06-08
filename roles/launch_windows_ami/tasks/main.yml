@@ -13,14 +13,14 @@
     region: "{{ ec2_region }}"
   register: sg_set_facts
 
+- name: debug sg_net_facts
+  debug:
+    var: sg_net_facts
+
 - name: use set fact for easier variables
   set_fact:
     ec2_vpc_id: "{{ vpc_net_facts.vpcs[0].id|default('WORKSHOP_UNDEF') }}"
     ec2_sg_id: "{{ sg_net_facts }}"
-
-- name: debug sg_net_facts
-  debug:
-    var: sg_net_facts
 
 - name: "Find current, region-specific Windows AMI."
   ec2_ami_info:
