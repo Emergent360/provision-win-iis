@@ -53,6 +53,7 @@
     image: "{{ win_ami.image_id }}"
     instance_type: "{{ instance_type }}"
     group_id: "{{ ec2_sg_id }}"
+    vpc_subnet_id: "{{ ec2_vpc_subnet_id }}"
     wait: yes
     wait_timeout: 500
     exact_count: 1
