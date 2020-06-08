@@ -81,6 +81,11 @@
     region: "{{ ec2_region }}"
     state: absent
 
+- name: delete private key
+  file:
+    path: "/var/lib/awx/.ssh/{{ ec2_name_prefix }}-private.pem"
+    state: absent
+
 - name: delete AWS VPC {{ ec2_name_prefix }}
   ec2_vpc_net:
     name: "{{ ec2_name_prefix }}-vpc"
