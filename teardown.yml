@@ -1,0 +1,8 @@
+---
+
+- name: "Teardown AWS Infra for demo."
+  hosts: localhost
+  gather_facts: no
+
+  roles:
+  - teardown
