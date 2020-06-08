@@ -8,7 +8,7 @@
 
 - name: Get the SG ID for {{ ec2_name_prefix }}-sg
   ec2_group_info:
-    filters: "{{ ec2_name_prefix }}-sg"
+    filters: "{{ ec2_name_prefix }}"-sg
   register: sg_set_facts
 
 - name: use set fact for easier variables
