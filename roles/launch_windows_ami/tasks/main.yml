@@ -32,7 +32,7 @@
 
 - name: Get the subnet ID for {{ ec2_name_prefix_}}-subnet
   ec2_vpc_subnet_info:
-    filter:
+    filters:
       vpc-id: "{{ ec2_vpc_id }}"
       "tag:Name": "{{ ec2_name_prefix }}-subnet"
   register: subnet_facts
