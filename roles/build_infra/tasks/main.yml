@@ -20,28 +20,12 @@
       Demonstration: "{{ demo_name }}"
     rules:
       - proto: tcp
-        from_port: 22
-        to_port: 22
-        cidr_ip: 0.0.0.0/0
-      - proto: tcp
-        from_port: 80
-        to_port: 80
-        cidr_ip: 0.0.0.0/0
-      - proto: tcp
-        from_port: 443
-        to_port: 443
-        cidr_ip: 0.0.0.0/0
-      - proto: tcp
         from_port: 5986
         to_port: 5986
         cidr_ip: "0.0.0.0/0"
       - proto: tcp
         from_port: 3389
         to_port: 3389
-        cidr_ip: "0.0.0.0/0"
-      - proto: tcp
-        from_port: 8080
-        to_port: 8081
         cidr_ip: "0.0.0.0/0"
       - proto: all
         cidr_ip: "{{ ec2_subnet }}"
@@ -109,11 +93,11 @@
     mode: '0400'
   when: create_key.changed
 
-- name: debugging all variables for ec2 instance creation VPC-1
+- name: debugging all variables for ec2 instance creation VPC
   debug:
     msg:
       - "ec2_name_prefix: {{ ec2_name_prefix }}"
       - "ec2_vpc_id: {{ ec2_vpc_id }}"
-      - "{{ ec2_name_prefix }}-key: {{ ec2_name_prefix }}-key"
+      - "private key pair: {{ ec2_name_prefix }}-key"
       - "ec2_security_group: {{ ec2_security_group }}"
       - "ec2_vpc_subnet_id: {{ ec2_vpc_subnet_id }}"
