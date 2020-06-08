@@ -37,6 +37,7 @@
     vpc_id: "{{ create_vpc.vpc.id }}"
     cidr: "{{ ec2_subnet }}"
     wait_timeout: 600
+    map_public: yes
     resource_tags:
       Name: "{{ ec2_name_prefix }}-subnet"
       Demonstration: "{{ demo_name }}"
