@@ -16,7 +16,7 @@
       vpc-id: "{{ ec2_vpc_id }}"
       group-name: "{{ ec2_name_prefix }}-sg"
     region: "{{ ec2_region }}"
-  register: sg_set_facts
+  register: sg_net_facts
 
 - name: debug sg_net_facts
   debug:
