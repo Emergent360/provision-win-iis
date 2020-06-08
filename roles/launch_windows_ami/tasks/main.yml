@@ -6,9 +6,14 @@
     region: "{{ ec2_region }}"
   register: vpc_net_facts
 
+- name: set ec2_vpc_id
+  set_fact:
+    ec2_vpc_id: "{{ vpc_net_facts.vpcs[0].id|default('WORKSHOP_UNDEF') }}"
+
 - name: Get the SG ID for {{ ec2_name_prefix }}-sg
   ec2_group_info:
-    filters: 
+    filters:
+      vpc-id: "{{ ec2_vpc_id }}"
       group-name: "{{ ec2_name_prefix }}-sg"
     region: "{{ ec2_region }}"
   register: sg_set_facts
@@ -17,9 +22,8 @@
   debug:
     var: sg_net_facts
 
-- name: use set fact for easier variables
+- name: set ec_sg_id
   set_fact:
-    ec2_vpc_id: "{{ vpc_net_facts.vpcs[0].id|default('WORKSHOP_UNDEF') }}"
     ec2_sg_id: "{{ sg_net_facts }}"
 
 - name: "Find current, region-specific Windows AMI."
