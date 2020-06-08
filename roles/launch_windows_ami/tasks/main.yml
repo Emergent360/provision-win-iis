@@ -10,6 +10,7 @@
   ec2_group_info:
     filters: 
       group-name: "{{ ec2_name_prefix }}-sg"
+    region: "{{ ec2_region }}"
   register: sg_set_facts
 
 - name: use set fact for easier variables
