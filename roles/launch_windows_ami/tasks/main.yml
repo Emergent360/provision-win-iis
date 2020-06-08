@@ -32,9 +32,9 @@
 
 - name: Get the subnet ID for {{ ec2_name_prefix }}-subnet
   ec2_vpc_subnet_info:
+    region: "{{ aws_region }}"
     filters:
       vpc-id: "{{ ec2_vpc_id }}"
-      region: "{{ aws_region }}"
       "tag:Name": "{{ ec2_name_prefix }}-subnet"
   register: subnet_facts
 
