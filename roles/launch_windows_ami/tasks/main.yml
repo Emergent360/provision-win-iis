@@ -88,3 +88,8 @@
     host: "{{ item.public_ip }}"
     timeout: 300
   with_items: "{{ ec2_result.tagged_instances }}"
+
+- name: Show public IP
+  debug:
+    msg: "{{ ec2_result }}"
+
