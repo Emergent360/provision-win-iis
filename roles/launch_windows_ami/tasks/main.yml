@@ -91,5 +91,5 @@
 
 - name: Show public IP
   debug:
-    msg: "{{ ec2_result }}"
+    msg: "{{ ec2_result.tagged_instances.public_ip }}"
 
