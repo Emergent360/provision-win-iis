@@ -1,7 +1,7 @@
 ---
 
 - name: "Updating Windows"
-  hosts: 
+  hosts: localhost
   gather_facts: no
 
   roles:
