@@ -1,7 +1,7 @@
 ---
 
 - name: "Updating Windows"
-  hosts: localhost
+  hosts: tag_Role_empire_iis_webapp
   gather_facts: no
 
   roles:
