@@ -87,7 +87,7 @@
     public_ip: "{{ ec2_result.instances[0].public_ip }}"
 
 - name: "Wait for WinRM on all hosts."
-  win_wait_for:
+  wait_for:
     port: 5986
     host: "{{ public_ip }}"
     timeout: 300
