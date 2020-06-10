@@ -8,3 +8,4 @@ ssh_port: 22
 demo_name: "Test Demo"
 instance_tag_name: "Test IIS Web Server"
 instance_tag_role: "test_iis_webapp"
+instance_tag_inventory: "test"
