@@ -1,7 +1,7 @@
 ---
 
 - name: "Provision web application"
-  hosts: localhost
+  hosts: all
   gather_facts: no
 
   roles:
