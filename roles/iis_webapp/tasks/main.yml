@@ -1,10 +1,10 @@
 ---
-- name: install iis
+- name: Install IIS
   win_feature:
     name: Web-Server
     state: present
 
-- name: start iis service
+- name: Start IIS service
   win_service:
     name: W3Svc
     state: started
