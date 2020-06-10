@@ -1,6 +1,6 @@
 ---
 
-- name: "Teardown AWS Infra for demo."
+- name: "Teardown AWS Infra"
   hosts: localhost
   gather_facts: no
 
