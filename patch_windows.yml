@@ -1,7 +1,7 @@
 ---
 
-- name: "Updating Windows"
-  hosts: tag_Role_empire_iis_webapp
+- name: "Update Windows AMI"
+  hosts: localhost
   gather_facts: no
 
   roles:

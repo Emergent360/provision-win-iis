@@ -1,7 +1,7 @@
 ---
 
-- name: "Setup web application."
-  hosts: tag_Role_empire_iis_webapp
+- name: "Provision web application"
+  hosts: localhost
   gather_facts: no
 
   roles:

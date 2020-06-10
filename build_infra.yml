@@ -1,6 +1,6 @@
 ---
 
-- name: "Create AWS Infra for demo."
+- name: "Create AWS Infra"
   hosts: localhost
   gather_facts: no
 
