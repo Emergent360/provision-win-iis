@@ -83,10 +83,10 @@
   retries: 5
   when: ec2_vpc_id is undefined
 
-- name: set variables for instance creation dynamically since VPC was not supplied by user
+- name: Set variables for instance creation
   set_fact:
     ec2_vpc_id: "{{ create_vpc.vpc.id }}"
-    ec2_security_group: "{{ ec2_name_prefix }}-insecure_all"
+    ec2_security_group: "{{ ec2_name_prefix }}-sg"
     ec2_vpc_subnet_id: "{{ create_subnet.subnet.id }}"
 
 - name: Create ssh key pair for workshop {{ ec2_name_prefix }}
@@ -95,14 +95,14 @@
     region: "{{ ec2_region }}"
   register: create_key
 
-- name: save private key
+- name: Save private key
   copy:
     content: "{{ create_key.key.private_key }}"
     dest: "/var/lib/awx/.ssh/{{ ec2_name_prefix }}-private.pem"
     mode: '0400'
   when: create_key.changed
 
-- name: debugging all variables for ec2 instance creation VPC
+- name: Show infra results
   debug:
     msg:
       - "ec2_name_prefix: {{ ec2_name_prefix }}"
