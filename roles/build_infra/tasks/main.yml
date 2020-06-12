@@ -5,7 +5,7 @@
     cidr_block: "{{ ec2_subnet }}"
     region: "{{ ec2_region }}"
     tags:
-      Demonstration: "{{ demo_name }}"
+      Demonstration: "{{ ec2_name_prefix }}"
   register: create_vpc
   until: create_vpc is not failed
   retries: 5
@@ -17,7 +17,7 @@
     vpc_id: "{{ create_vpc.vpc.id }}"
     region: "{{ ec2_region }}"
     tags:
-      Demonstration: "{{ demo_name }}"
+      Demonstration: "{{ ec2_name_prefix }}"
     rules:
       - proto: tcp
         from_port: 80
@@ -48,7 +48,7 @@
     map_public: yes
     resource_tags:
       Name: "{{ ec2_name_prefix }}-subnet"
-      Demonstration: "{{ demo_name }}"
+      Demonstration: "{{ ec2_name_prefix }}"
   register: create_subnet
   when: ec2_vpc_id is undefined
   until: create_subnet is not failed
@@ -60,7 +60,7 @@
     vpc_id: "{{ create_vpc.vpc.id }}"
     tags:
       Name: "{{ ec2_name_prefix }}-igw"
-      Demonstration: "{{ demo_name }}"
+      Demonstration: "{{ ec2_name_prefix }}"
   register: igw
   until: igw is not failed
   retries: 15
@@ -77,7 +77,7 @@
         gateway_id: "{{ igw.gateway_id }}"
     tags:
       Name: "{{ ec2_name_prefix }}-rtb"
-      Demonstration: "{{ demo_name }}"
+      Demonstration: "{{ ec2_name_prefix }}"
   register: routetable
   until: routetable is not failed
   retries: 5
@@ -106,7 +106,7 @@
   debug:
     msg:
       - "ec2_name_prefix: {{ ec2_name_prefix }}"
-      - "ec2_vpc_id: {{ ec2_vpc_id }}"
+      - "ec2_vpc_id: {{ create_vpc.vpc.id }}"
       - "private key pair: {{ ec2_name_prefix }}-key"
-      - "ec2_security_group: {{ ec2_security_group }}"
-      - "ec2_vpc_subnet_id: {{ ec2_vpc_subnet_id }}"
+      - "ec2_security_group: {{ ec2_name_prefix }}-sg"
+      - "ec2_vpc_subnet_id: {{ create_subnet.subnet.id }}"
