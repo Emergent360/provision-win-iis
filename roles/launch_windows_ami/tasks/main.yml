@@ -16,7 +16,7 @@
 
 - name: Get the subnet ID for {{ ec2_name_prefix }}-subnet
   ec2_vpc_subnet_info:
-    region: "{{ aws_region }}"
+    region: "{{ ec2_region }}"
     filters:
       vpc-id: "{{ vpc_net_facts.vpcs[0].id }}"
       "tag:Name": "{{ ec2_name_prefix }}-subnet"
@@ -24,7 +24,7 @@
 
 - name: "Find current, region-specific Windows AMI."
   ec2_ami_info:
-    region: "{{ aws_region }}"
+    region: "{{ ec2_region }}"
     filters:
       name: "{{ ami_name }}"
   register: found_amis
@@ -37,7 +37,7 @@
 - name: "Start Windows instances."
   ec2:
     key_name: "{{ ec2_name_prefix }}-key"
-    region: "{{ aws_region }}"
+    region: "{{ ec2_region }}"
     image: "{{ win_ami.image_id }}"
     instance_type: "{{ instance_type }}"
     group_id: "{{ sg_net_facts.security_groups[0].group_id }}"
